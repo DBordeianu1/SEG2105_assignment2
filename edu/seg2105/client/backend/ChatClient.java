@@ -143,16 +143,16 @@ public class ChatClient extends AbstractClient
       else if (command.equals("#login")) {
     	  //#login causes the client to connect to the server. Only allowed if the client is not already 
     	  //connected; displays an error message otherwise.
-    	  if (!isConnected()) {
-    		  try {
-    			  openConnection(); //throws IOException
-    		  }catch(IOException e) {
-    			  clientUI.display("An error occured during log in, please try again.");
-    		  }
-    	  }
-    	  else {
+    	  if (isConnected()) {
     		  clientUI.display
 			  ("You are already logged in. To log in again, use the #logoff command beforehand.");
+    		  return;
+    	  }
+    	  try {
+    		  openConnection(); //throws IOException
+    		  clientUI.display("Login successful");
+    	  }catch(IOException e) {
+    		  clientUI.display("An error occured during login, please try again.");
     	  }  
       }
       else if (command.equals("#gethost")) {
