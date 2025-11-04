@@ -72,6 +72,53 @@ public class EchoServer extends AbstractServer
       ("Server has stopped listening for connections.");
   }
   
+  /**
+   * Implements hook method in the superclass. run() method in ConnectionToClient calls
+   * clientConnected(...) method below.
+   * 
+   * Prints out a nice message whenever a client connects.
+   **/
+  @Override
+  protected void clientConnected(ConnectionToClient client){
+	  System.out.println("New client "+client+" connected to the server");
+  }
+  
+  /**
+   * Implements hook method in the superclass. close() method in ConnectionToClient calls
+   * clientDisconnected(...) method below. 
+   * 
+   * Prints out a nice message whenever a client disconnects.
+   **/
+  @Override
+  synchronized protected void clientDisconnected(ConnectionToClient client) {
+		// Since we don't track which ID belongs to this client directly,
+		// remove by value.
+	  System.out.println("Unknown client disconnected from the server");
+	  /*
+	   * Note: I did not write the line above as "System.out.println(client+"disconnected from the server");"
+	   *      since it would print null as the client is null. Once we will be adding the Id (in exercise 3), 
+	   *      we will have more adapted code. Until then, this is my solution to that problem.
+	   * */
+	  super.clientDisconnected(client); //Since we do not have access to the private instance clientConnections
+	}
+  
+  /**
+   * Implements hook method in the superclass. Called by the OCSF framework when a client
+   * disconnects abruptly. 
+   * 
+   * Prints out a nice message whenever a client disconnects unexpectedly.
+   **/
+  @Override
+  synchronized protected void clientException(ConnectionToClient client, Throwable exception) {
+	  System.out.println("Unknown client disconnected unexpectedly from the server: "+exception.getMessage());
+	  /*
+	   * Note: I did not write the line above as "System.out.println(client+"disconnected unexpectedly from the server");"
+	   *      since it would print null as the client is null. Once we will be adding the Id (in exercise 3), 
+	   *      we will have more adapted code. Until then, this is my solution to that problem.
+	   * */
+	  super.clientDisconnected(client); //Since we do not have access to the private instance clientConnections
+  }
+  
   
   //Class methods ***************************************************
   
