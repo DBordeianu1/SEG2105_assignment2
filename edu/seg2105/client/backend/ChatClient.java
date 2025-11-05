@@ -40,6 +40,7 @@ public class ChatClient extends AbstractClient
   /**
    * Constructs an instance of the chat client.
    *
+   * @param loginID The login id of the client.
    * @param host The server to connect to.
    * @param port The port number to connect on.
    * @param clientUI The interface type variable.
@@ -99,6 +100,8 @@ public class ChatClient extends AbstractClient
   /**
    * This method helps the handleMessageFromClientUI(...) method            
    * Defines what to do if a certain command has been typed
+   * 
+   * @param command The command from the UI.
    */
   public void handleCommand(String command) throws IOException, NumberFormatException {
 	  if (command.equals("#quit")) {
@@ -152,23 +155,6 @@ public class ChatClient extends AbstractClient
 		  }
 		  
 	  }
-	  /* do not need this anymore bc of Exercise 3, Cliend Side, Part c), iv)
-      else if (command.equals("#login")) {
-    	  //#login causes the client to connect to the server. Only allowed if the client is not already 
-    	  //connected; displays an error message otherwise.
-    	  if (isConnected()) {
-    		  clientUI.display
-			  ("You are already logged in. To log in again, use the #logoff command beforehand.");
-    		  return;
-    	  }
-    	  try {
-    		  openConnection(); //throws IOException
-    		  clientUI.display("Login successful");
-    	  }catch(IOException e) {
-    		  clientUI.display("An error occured during login, please try again.");
-    	  }  
-      }
-	  */
       else if (command.equals("#gethost")) {
     	  //#gethost displays the current host name
     	  clientUI.display("Current host name is: "+getHost());
