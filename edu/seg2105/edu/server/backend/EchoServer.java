@@ -4,6 +4,7 @@ package edu.seg2105.edu.server.backend;
 // license found at www.lloseng.com 
 
 
+import edu.seg2105.client.common.ChatIF;
 import ocsf.server.*;
 
 /**
@@ -22,7 +23,14 @@ public class EchoServer extends AbstractServer
   /**
    * The default port to listen on.
    */
-  final public static int DEFAULT_PORT = 5555;
+  //final public static int DEFAULT_PORT = 5555;
+	
+  //Instance variables **********************************************	
+  /**
+    * The interface type variable.  It allows the implementation of 
+	* the display method in the server.
+	*/	
+  ChatIF serverUI;
   
   //Constructors ****************************************************
   
@@ -30,10 +38,11 @@ public class EchoServer extends AbstractServer
    * Constructs an instance of the echo server.
    *
    * @param port The port number to connect on.
+   * @param serverUI The interface type variable.
    */
-  public EchoServer(int port) 
-  {
+  public EchoServer(int port, ChatIF serverUI){
     super(port);
+    this.serverUI = serverUI;
   }
 
   
@@ -50,6 +59,33 @@ public class EchoServer extends AbstractServer
   {
     System.out.println("Message received: " + msg + " from " + client);
     this.sendToAllClients(msg);
+  }
+  
+  /**
+   * This method handles all data coming from the UI            
+   *
+   * @param message The message from the UI.    
+   */
+  public void handleMessageFromServerUI(String message) {
+	  try {
+		  if (message.startsWith("#")) {
+	    		handleCommand(message); //Helper method to handle the commands typed in the server console
+	    	}
+	    	else {
+	    		serverUI.display(message);
+	    		sendToAllClients("SERVER MSG> "+message); //Does not throw exception but the method it calls does
+	    	}		
+	  }catch(Exception e) {
+		  serverUI.display("Could not send message to connected clients.");
+	  }
+  }
+  
+  /**
+   * This method helps the handleMessageFromServerUI(...) method            
+   * Defines what to do if a certain command has been typed
+   */
+  public void handleCommand(String command) {
+	  
   }
     
   /**
@@ -129,6 +165,7 @@ public class EchoServer extends AbstractServer
    * @param args[0] The port number to listen on.  Defaults to 5555 
    *          if no argument is entered.
    */
+  /*
   public static void main(String[] args) 
   {
     int port = 0; //Port to listen on
@@ -153,5 +190,6 @@ public class EchoServer extends AbstractServer
       System.out.println("ERROR - Could not listen for clients!");
     }
   }
+  */
 }
 //End of EchoServer class
