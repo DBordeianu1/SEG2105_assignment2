@@ -92,7 +92,7 @@ public class EchoServer extends AbstractServer
 		    System.out.println(loginID+" has logged on.");
 	} else {
 		String prefix=(String) client.getInfo(loginKey);
-	    this.sendToAllClients(prefix+": "+msg);
+	    this.sendToAllClients(prefix+"> "+msg);
 	} 
   }
   
